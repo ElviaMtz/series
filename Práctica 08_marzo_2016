@@ -1,0 +1,16 @@
+##Ejercicio 
+##1)Generar un data frame con la tasa de desocupacion que inicie en el primer trimestre del 2005
+#tasa de desocupación 3.4,4.8,3.3,5.6, 3.2, 2.9,1.9, 2.8, 6.0, 4.3, 2.2
+###2)convertirla en una serie de tiempo y graficar la ST y la tendencia 
+###***punto extra librarla del segundo examen 
+##obtener un pdf. jpg., etc  con las graficas en una misma imagen  
+t<-c(3.4, 4.8, 3.3, 5.6, 3.2, 2.9, 1.9, 2.8, 6.0, 4.3, 2.2)
+desocup<-data.frame(t)
+serie<-ts(desocup)
+pdf(file="TDesocupacn.pdf")
+layout(1:2)
+plot(serie, main = "Tasa de desocupacion",
+     xlab = "Trimestre",ylab = "tasa de desocupacion")
+plot(aggregate(serie))
+dev.off()
+###ANA ELVIA MARINEZ GOMEZ 

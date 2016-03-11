@@ -1,0 +1,31 @@
+#simulacion de series de tiempo 
+###vamos a simular un indicador
+##para la simulacion en principio necesitamos alguna información 
+###valor máx., min, el numero de datos
+###en este ejemplo vamos a poner la poblacion en máximo
+### que es el valor minimio seran 100, max 120, 15 datos que inicie en 2000
+pob<-sample(100:120, 15, replace = F)
+            ## la la convertimios en una serie de teimpo 
+pobts<-ts(pob, frequency = 1, start=(2000))
+plot(pobts)### darle formato
+plot(aggregate(pobts))
+ 
+ocu<-ts(read.csv(("C:\\Users\\SALA-C4\\Desktop\\ocupa.csv"),header = F),frequency=4,start=2005)
+plot(ocu) ##darle formato
+plot(aggregate(ocu)) ##darle formato 
+
+##__________________________________________________________________
+###simular la tasa de desocupación, 3 a 8, 2005, 40 datos, trimestral
+
+desocupados<-sample(3:8, 44, replace = TRUE)
+desocuts<-ts(desocupados,frequency = 4, start = 2005)
+plot(desocuts)
+plot(aggregate(desocuts))
+##bajar INEGI tasa de desocupacion 
+#importar en R y comparar 
+desocu<-ts(read.csv(("C:\\Users\\SALA-C4\\Desktop\\desocu.csv"),header = F),frequency=4,start=2005)
+plot(desocu,main = "tasa de desocupación",
+     xlab = "Años",ylab = "Tasa de desocupación") 
+plot(aggregate(desocu)) ##darle formato 
+###comparar y simular en R 
+plot(cbind(desocuts,desocu))

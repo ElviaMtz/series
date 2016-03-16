@@ -1,0 +1,47 @@
+###ANA ELVIA MARTINEZ GOMEZ  
+
+#### Generar 4 objetos con datos aleatorios y que tengan 60 datosa
+#### Generar 4 objetos con datos aleatorios y que tengan 60 datos
+### dato 1 de n?mero de profesionista (mill)rango de 5 a 8
+### dato 2 crec pib rango de 0 a 5
+### dato 3 porcentaje de ocupados rango de 40 a 60
+### dato 4 porcentaje de desocupados rango de 3 a 8
+nprof<-sample(5:8, 60, replace = TRUE)
+crepib<-sample(0:5, 60, replace = TRUE)
+ocu<-sample(40:60, 60, replace = TRUE)
+desocu<-sample(3:8, 60, replace = TRUE)
+#### 1) una vez que generen los datos hacer un data frame de los 4 objetos
+datos<-data.frame(nprof,crepib,ocu,desocu)
+View(datos)
+#### 2) mostrar en consola los primeros 12 y ultimos 12 datos
+datos[c(1:12,49:60),seq(1:4)] 
+#### 3) convertir los objetos en series de tiempo desde el data frame comezando en 2010 y son datos mensuales
+datosts<-ts(datos, frequency = 12, start=(2010))
+datosts
+nprofts<-ts(datos[,1],frequency = 12, start=(2010))
+crepibts<-ts(datos[,2],frequency = 12, start=(2010))
+ocuts<-ts(datos[,3],frequency = 12, start=(2010))
+desocuTS<-ts(datos[,4],frequency = 12, start=(2010))
+#### 4) graficar los profesionistas y ocupados en la misma imagen
+layout(1:2)
+plot(nprofts,main = "Numero de profesionistas",xlab = "años 2010-2014",ylab ="Número de profesionistas (miles)")
+plot(ocuts,main = "ocupados",xlab = "años 2010-2014",ylab ="ocupados")
+#### 5) graficar pib y desocupados en la misma imagen
+layout(1:2)
+plot(crepibts,main = "PIB",xlab = "años 2010-2014",ylab ="pib")
+plot(desocuTS,main = "desocupados",xlab = "años 2010-2014",ylab ="desocupados")
+#### 6) graficar todas juntas
+layout(1:4)
+plot(nprofts,main = "N. de profesionistas",xlab = "años 2010-2014",ylab ="N. de profesionistas")
+plot(ocuts,main = "ocupados",xlab = "años 2010-2014",ylab ="ocupados")
+plot(crepibts,main = "PIB",xlab = "años 2010-2014",ylab ="pib")
+plot(desocuTS,main = "desocupados",xlab = "años 2010-2014",ylab ="desocupados")
+#### 7) creaR serie de tiempo multiple!!!!
+seriemultiple<-ts.intersect(nprofts,crepibts,ocuts,desocuTS)
+#### 8 ) graficar serie de tiempo multiple
+plot(seriemultiple, main="serie de tiempo multiple", xlab="años", ylab="(miles)", col="salmon")
+#### 9 ) dividir serie de tiempo y graficar solo el ultimo año...
+x<-window(seriemultiple, start=2014)
+plot(x)
+#### 8 ) analizar las graficas ( si hay alguna tendencia o variacion estacional) (investigar)
+##En 2014 podemos ver que hauy una variación estacional, es decir hay una variación periódica y predecible de la misma con un periodo inferior o igual a 2014.4.

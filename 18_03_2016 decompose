@@ -1,0 +1,11 @@
+##########simulando la tasa de desocuoación 
+tdesoc<-ts(datos[,4],frequency = 12, start=(2010))
+tdesoc.de<-decompose(tdesoc)
+names(tdesoc.de)####trend=tandencia(mt), seasonal=efecto estacional (st), random=error(zt)
+plot(tdesoc.de)
+plot(decompose(tdesoc))
+Trend<-tdesoc.de$trend
+Season<-tdesoc.de$seasonal
+tdesoc.dem<-decompose(tdesoc,type = "mult")
+Trend
+Season

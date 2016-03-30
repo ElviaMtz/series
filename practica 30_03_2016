@@ -1,0 +1,88 @@
+########Ejercicio en clase
+###Accion america movil 
+amovil<-ts(read.csv(("C:\\Users\\SALA-C4\\Desktop\\acciones Amovil.csv"),header = T),frequency=252,start=2000)
+amovil
+##descomponiendo en modelo aditivo y multiplicativo 
+##graficarlo
+amoviladi<-decompose(amovil)
+plot(decompose(amovil))
+plot(amoviladi)
+names(amoviladi)##lamamos los elementos que tiene el objeto 
+amoviladi$type
+
+amovilmul<-decompose(amovil,type = "mult")
+plot(decompose(amovil, type = "mult"))
+plot(amovilmul)
+names(amovilmul)##lamamos los elementos que tiene el objeto 
+amovilmul$type
+### extraer la tendencia estacionalidad y aleatoriedad 
+#aditivo
+tendenciaad<-(amoviladi$trend)
+estacionalidadad<-(amoviladi$seasonal)
+aleatoriedadad<-(amoviladi$random)
+adi<-data.frame(tendenciaad,estacionalidadad,aleatoriedadad)
+##multiplicativo
+tendenciamu<-(amovilmul$trend)
+estacionalidadmu<-(amovilmul$seasonal)
+aleatoriedadmu<-(amovilmul$random)
+mult<-data.frame(tendenciamu,estacionalidadmu,aleatoriedadmu)
+##exportar a excel
+
+require (XL Connect)
+acciones<-loadWorkbook("C:\\Users\\SALA-C4\\Desktop\\ acciones.xls",create = TRUE)
+createSheet(acciones,name="amoviladi")
+createName(acciones, name="amoviladi", formula="amoviladi!$A$1")
+writeWorksheet(acciones,adi,"amoviladi")
+
+createSheet(acciones,name="amovilmul")
+createName(acciones, name="amovilmul", formula="amovilmul!$A$1")
+writeWorksheet(acciones,adi,"amovilmul")
+saveWorkbook(acciones)
+
+#graficar estacionalidad, tendencia, aleatoriedad 
+
+#aditivo
+plot(tendenciaad)
+plot(estacionalidadad)
+plot(aleatoriedadad)
+##multiplicativo
+plot(tendenciamu)
+plot(estacionalidadmu)
+plot(aleatoriedadmu)
+
+
+####################trabajo enj calse
+###Acciones ICA recidencial 
+###30/03/2015
+ICA<-ts(read.csv(("C:\\Users\\SALA-C4\\Desktop\\ICA acciones.csv"),header = T),frequency=252,start=2000)
+ICA
+###la descomposicion de la serie de tiempo nos permite coonocer la estacionalidad, la tendencia 
+##y la aleatoreidad de la ST 
+###para descomponer una serie de tiempo se UTLIZA LA FUNCION DECOMPOSE() 
+##para descomponer una ST
+icaadi<-decompose(ICA)
+
+##Para ver graficamente una descomposición de la ST en R existen
+###dos formas de graficar la descomposición 
+###1)directo de la reie de tiempo 
+plot(decompose(ICA))
+plot(icaadi)
+names(icaadi)##lamamos los elementos que tiene el objeto 
+icaadi$type
+#en estos casos nos debe dar los mismos resultados 
+#ahora hay dos modelos que podemos descomponer la ST 
+##1)modelo aditivo .....x t=mt+st+zt
+##2)modelo multiplicativo .....x t=mt*st+zt
+icaadimult<-decompose(ICA,type = "mult")##asignno qie es modelo multiplicativo, de otra forma R considera un modelo aditivo 
+###creando tres objetos: 1=tendencia, 2)estacionalidad, 3)aleatoriedad
+tendencia<-(icaadi$trend)
+estacionalidad<-(icaadi$seasonal)
+aleatoriedad<-(icaadi$random)
+data.frame(tendencia,estacionalidad,aleatoriedad)
+ts.plot(cbind(tendencia,tendencia*estacionalidad), lty=2:15, col=c(55,88))# sirve para ver diferentes tipos de lineas
+####algunas de las funciones utilizadas en ST 
+ts##genera una serie de tiempo 
+window(ts)##grafica st
+decompose()
+
+

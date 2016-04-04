@@ -1,0 +1,68 @@
+femsa <- read.csv ("C:\\Users\\SALA-C4\\Desktop\\femsa.csv", header = T)
+femsats <- ts(femsa [,5], start = 2000, frequency = 12)
+plot(femsats, main="valor de acciones femsa", ylab="valor cierre")
+
+DAI <- read.csv ("C:\\Users\\SALA-C4\\Desktop\\dai.csv", header = T)
+DAIts <- ts(DAI [,5], start = 2000, frequency = 12)
+plot(DAIts, main="valor de acciones Daimler", ylab="valor cierre")
+
+bimbo<- read.csv ("C:\\Users\\SALA-C4\\Desktop\\b.csv", header = T)
+bimbots <- ts(bimbo [,5], start = 2000, frequency = 12)
+plot(bimbots, main="valor de acciones bimbo", ylab="valor cierre")
+
+install.packages("fpp")
+require(fpp)
+seasonplot(DAIts, s=12, year.labels = TRUE, main ="valor acciones daimler" , ylab = "valor cierre", col = rainbow(20), year.labels.left = TRUE, pch=19)
+monthplot(DAIts, main ="valor acciones daimler" , ylab = "valor cierre", col = rainbow(20), year.labels.left = TRUE, pch=19)
+### funciones utilizadas
+##plot or plot.ts
+##grafica de temporalidad
+#seasonplot
+##gráficas de subseries temporales 
+##monthplot
+
+#######CORRELACION Y COVARIANZA
+#Covarianza y correlación : medida del grado
+#relación lineal entre dos variables (y Y x).
+
+############ covarianza 
+#ejercicio en r verifiquen que la formula de la covarianza
+#y la  correlacion den el mismo resultado que las funciones cov(x,y) y corr(x,y)
+#y la vovarianza es medida de asociacion entre dos variables
+#Cov(x,y)=Cov(x,y)/sd(x)sd(y)
+###Cov(x,y)=suma((xi-x(media))(yi-y(media)))/(n-1)
+
+##ejemplo en R 
+n<-length(DAIts)
+sum(((DAIts)-mean(DAIts))*(femsats-mean(femsats)))/(n-1)
+cov(window(DAIts,femsats))/sd(DAIts)*sd(femsats)
+
+cov(DAIts,femsats)=(xi-x(media))(yi-y((media)))/(n-1)
+###analizar los años de las tres empresas elegidas (seasonplot)
+#eloegir los 3 años que ubiquen estacionalidad ciclo o tendencia 
+#interpretar estos tres años 
+#2) calcular con la formula la funcion de la cov y cor en la convinacion de las tres empresas es decir empresa1=x,empresa2=y, empresa3=z, calcuular la correlacion de 
+##cor(x,y), cor(y,z) yu cor(x,z) para haverlas compatibles utiliza el window
+seasonplot((DAIts), s=12, year.labels = TRUE, main ="valor acciones daimler" , ylab = "valor cierre", col = rainbow(20), year.labels.left = TRUE, pch=19)
+seasonplot((bimbots), s=12, year.labels = TRUE, main ="valor acciones bimbo" , ylab = "valor cierre", col = rainbow(20), year.labels.left = TRUE, pch=19)
+seasonplot((femsats), s=12, year.labels = TRUE, main ="valor acciones femsa" , ylab = "valor cierre", col = rainbow(20), year.labels.left = TRUE, pch=19)
+###En la empresa daimler podemos ver que en el alo 2009 2011 y 2013 hay una tendencia a la alza, no hay estacionalidad, en 2009 hay una estacionalidad negativa al inicio del año pero después todo el año es positiva
+
+#x<-DAIts
+#y<-BIMBO 
+#z<-FEMSA
+DAItsmed<-mean(DAIts)
+bimbomed<-mean(bimbots)
+femsamed<-mean(femsats)
+sd.DAI<-sd(DAIts)
+sd.bimbo<-sd(bimbots)
+sd.femsa<-sd(femsats)
+#DAIMLER-bimbo
+corrxy<-(cov(DAIts,bimbots))/(sd.DAI*sd.bimbo)
+corrxyR<-cor(DAIts,bimbots)
+#DAIMLER-femsa
+corrxz<-(cov(DAIts,femsats)/(sd.DAI*sd.femsa))
+corrxzR<-cor(DAIts,femsats)
+#bimbo-femsa
+corryz<-(cov(bimbots,femsats)/(sd.bimbo*sd.femsa))
+corryzR<-cor(bimbots,femsats)

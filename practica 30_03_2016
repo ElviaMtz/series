@@ -7,7 +7,7 @@ amovil
 amoviladi<-decompose(amovil)
 plot(decompose(amovil))
 plot(amoviladi)
-names(amoviladi)##lamamos los elementos que tiene el objeto 
+names(amoviladi)##llamamos los elementos que tiene el objeto 
 amoviladi$type
 
 amovilmul<-decompose(amovil,type = "mult")

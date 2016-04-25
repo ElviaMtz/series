@@ -1,0 +1,50 @@
+###instalar nueva version de R:
+if(!require(installr)){
+  install.packages("installr");require(installr)}
+updateR()
+
+
+
+install.packages("fpp")
+install.packages("forecast")
+library("fpp")
+library("forecast")
+
+lab<-read.csv("C:\\Users\\SALA-C4\\Desktop\\IndicadoresENOE_2016-04-25.csv")
+part<-ts(lab[,1],start = 2005,frequency = 4)
+
+plot(part, xlim=c(2004,2016))
+Acf(part)
+help(Acf)
+partpro<-meanf(part,4) ##participacion pronostico, 4<-periodos a pronosticar
+plot(partpro)
+##part es la st
+##el numero de datos a 
+
+#######ingenuo
+partnai<-naive(part,4)
+plot(partnai)
+rwf(part,3) ##alternativo
+
+##ingenuo estacional
+partsnai<-snaive(part,4)
+partsnai
+
+###metodo de la deriva 
+partder<-rwf(part,4,drift=TRUE)
+partder
+plot(partder)
+
+
+###Ejemplos, pronosticando 4 periodos
+part1<-window(part,start=2005, end=2010)
+partaj1<-meanf(part1,h=4)
+partaj2<-naive(part1,h=4)
+partaj3<-snaive(part1,h=4)
+
+
+plot(part, plot.conf=FALSE,main="proyeccion de tasas de desempleo trimestre")
+lines(partaj2$mean,col=2)
+lines(partaj3$mean,col=3)
+lines(partaj1$mean,col=4)
+legend("topleft", lty=1,col=c(1,2,3,4),legend = c("método media", "método ingenuo","método ingenuo estacional"))

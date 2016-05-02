@@ -1,0 +1,39 @@
+cremx<-read.csv("C:\\Users\\SALA-C4\\Documents\\Data_Extract_From_Indicadores_del_desarrollo_mundial.csv",header = F)
+cremxts<-ts(cremx[,2], start = 1966)
+plot(cremxts)
+View(cremx)
+require(fpp)
+
+plot(cremxts,main="tasa de crecimientodel PIB en México 1966-2015", ylab="tasa de crecimiento", xlab="años")
+res2<-residuals(snaive(cremxts))
+res3<-residuals(rwf(cremxts,drift=T))
+res4<-residuals(meanf(cremxts))
+res1<-residuals(naive(cremxts))
+
+plot(res2, main="residuals método de ingenio estacional", ylab="residuales", xlab="años")##para saber si la varianza es constante
+Acf(res2, main="Acf de residuales") ###para saber si hay o no correlacion entre los residuos
+hist(res2, main = "histograma de residuales")##para saber si los residuos se distribuyen normal 
+
+plot(res3, main="residuals método de deriva", ylab="residuales", xlab="años")
+Acf(res3, main="Acf de residuales") 
+hist(res3,nclass = "FD", main = "histograma de residuales")
+
+plot(res4, main="residuals método media", ylab="residuales", xlab="años")
+Acf(res4, main="Acf de residuales") 
+hist(res4,nclass = "FD", main = "histograma de residuales")
+
+plot(res1, main="residuals método ingenuo", ylab="residuales", xlab="años")
+Acf(res1, main="Acf de residuales") 
+hist(res1,nclass = "FD", main = "histograma de residuales")
+
+Box.test(res1,lag = 10,fitdf = 0)##box pierce
+Box.test(res1,lag = 10,fitdf = 0,type = "Lj") ##box ljun
+
+Box.test(res2,lag = 10,fitdf = 0)##box pierce
+Box.test(res2,lag = 10,fitdf = 0,type = "Lj") ##box ljun
+
+Box.test(res3,lag = 10,fitdf = 0)##box pierce
+Box.test(res3,lag = 10,fitdf = 0,type = "Lj") ##box ljun
+
+Box.test(res4,lag = 10,fitdf = 0)##box pierce
+Box.test(res4,lag = 10,fitdf = 0,type = "Lj") ##box ljun

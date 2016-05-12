@@ -1,0 +1,102 @@
+######ANA ELVIA MARTINEZ GÓMEZ 
+######Ejercicio
+##Elegir 2 series de tiempo sin tendencia ni estacionalidad
+##serie 1 Alpha=.1, .6, .9
+##Serie 2alpha =.0001, .5, .987
+#Graficar las series de tiempo
+#Calcular el MAE, RMSE, MAPE, Y SEE
+##DECIDIR EN C/U DE LAS SERIES, CUALES SE OCUPARAN cON BASE EN LOS MAE, RMSE, MAPE Y SSE
+###ARGUMENTAER PORQUE ES MEJOR USAR UN ALPHA CERCANO A CERO QUE A UNO 
+##Subuir script a github grafica y argumentacion, enviarlo a word 
+
+indic <- read.csv("C:\\Users\\Lenovo\\Downloads\\IndicadoresENOE_2016-04-25.csv")
+require (forecast)
+require (fpp)
+
+asats<-ts(indic[,5], start=2005, frequency=4)
+tosits<-ts(indic[,9],start=2005, frequency=4)
+
+##############################################Tasa de trabajo asalariado###################################
+mod_1<-ses(asats, alpha=0.1, initial="simple",h=4)
+mod_2<-ses(asats, alpha=0.6, initial="simple",h=4)
+mod_3<-ses(asats, alpha=0.9, initial="simple",h=4)
+
+plot(mod_1, plot.conf=FALSE, ylab="alats", xlab="Año", main="", fcol="white", type="o")
+
+#####Graficando los ajustes 
+
+lines(fitted(mod_1),col="blue", type="o")
+lines(fitted(mod_2),col="red", type="o")
+lines(fitted(mod_3),col="green", type="o")
+
+###Graficando la media del pronostico de cada uno de los modelos
+lines(mod_1$mean,col="blue", type="o")
+lines(mod_2$mean,col="red", type="o")
+lines(mod_3$mean,col="green", type="o")
+legend("topleft", lty=1, col=C(1, "blue","red","green" ), c("data", expression(alpha==0.1), expression(alpha==0.6), expression(alpha==0.9)),pch=1)
+
+eval1<-accuracy (mod_1)
+eval2<-accuracy (mod_2)
+eval3<-accuracy (mod_3)
+
+eval_1
+eval_2
+eval_3
+
+#######################TASA DE OCUPACION EN EL SECTOR INFORMAL 
+mod_11<-ses(tosits, alpha=0.0001, initial="simple",h=4)
+mod_22<-ses(tosits, alpha=0.5, initial="simple",h=4)
+mod_33<-ses(tosits, alpha=0.987, initial="simple",h=4)
+
+plot(mod_11, plot.conf=FALSE, ylab="tosi", xlab="Año", main="", fcol="white", type="o")
+#####Graficando los ajustes 
+
+lines(fitted(mod_11),col="blue", type="o")
+lines(fitted(mod_22),col="red", type="o")
+lines(fitted(mod_33),col="green", type="o")
+
+###Graficando la media del pronostico de cada uno de los modelos
+lines(mod_11$mean,col="blue", type="o")
+lines(mod_22$mean,col="red", type="o")
+lines(mod_33$mean,col="green", type="o")
+legend("topleft", lty=1, col=C(1, "blue","red","green" ), c("data", expression(alpha==0.0001), expression(alpha==0.5), expression(alpha==0.987)),pch=1)
+
+eval11<-accuracy (mod_11)
+eval22<-accuracy (mod_22)
+eval33<-accuracy (mod_33)
+
+eval_11
+eval_22
+eval_33
+
+
+################################################################### CLASE ######
+mod1<-ses(deso, alpha=0.2, initial="simple",h=4)
+mod2<-ses(deso, alpha=0.6, initial="simple",h=4)
+mod3<-ses(deso, alpha=1, initial="simple",h=4)
+plot(mod1,plot.conf=FALSE, ylab="desocupa", xlab="year", main="", fcol="white", type="o")
+#####Graficando los ajustes 
+lines(fitted(mod1),col="blue", type="o")
+lines(fitted(mod2),col="red", type="o")
+lines(fitted(mod3),col="green", type="o")
+###Graficando la media del pronostico de cada uno de los modelos
+lines(mod1$mean,col="blue", type="o")
+lines(mod2$mean,col="red", type="o")
+lines(mod3$mean,col="green", type="o")
+legend("topleft", lty=1, col=C(1, "blue","red","green" ), c("data", expression(alpha==0.2), expression(alpha==0.6), expression(alpha==1))pch=10)
+
+names(mod1)
+aju1<-mod1$fitted #datos ajstados del modelo 1 
+aju2<-mod2$fitted
+aju3<-mod3$fitted
+
+
+resmod1<-(deso-ajus1)
+resmod2<-(deso-ajus2)
+resmod3<-(deso-ajus3)
+mod123<- data.frame(deso, aju1,aju2, aju3, resmod1, resmod2, resmod3)
+View(mod123)
+
+res1<-(resmod1-mod1$residuals)
+res2<-(resmod2-mod2$residuals)
+res3<-(resmod3-mod3$residuals)

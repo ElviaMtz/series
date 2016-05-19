@@ -1,0 +1,69 @@
+
+
+
+require (foreign)
+brasilpib<-read.csv("C:\\Users\\Lenovo\\Downloads\\pib brasil .csv")
+mexedu<-read.csv("C:\\Users\\Lenovo\\Downloads\\mexico educacion.csv")
+bpibts<- ts(brasilpib, start = 1990)
+mexeduts<-ts(mexedu, start = 1990)
+
+##AJUSTE 1 
+require(fpp)
+aju1bra<-holt(bpibts,alpha=0.3,beta=0.1,initial="simple",h=4)
+aju1mex<-holt(mexeduts,alpha=0.3,beta=0.1,initial="simple",h=4)
+
+##AJUSTE 2
+aju2bra<-holt(bpibts,alpha=0.3,beta=0.1,initial="simple",h=4,exponential=T)
+aju2mex<-holt(mexeduts,alpha=0.3,beta=0.1,initial="simple",h=4,exponential=T)
+
+
+#AJUSTE 3
+aju3bra<-holt(bpibts,alpha=0.3,beta=0.1, gamma=0.5,damped=T)
+aju3mex<-holt(mexeduts,alpha=0.3,beta=0.1,gamma=0.5,damped=T)
+
+#AJUSTE 4
+aju4bra<-holt(bpibts,alpha=0.3,beta=0.1, gamma=0.5,damped=T, exponential=T)
+aju4mex<-holt(mexeduts,alpha=0.3,beta=0.1,gamma=0.5,damped=T,exponential=T)
+
+#Ajuste 5 
+aju5bra<-hw(bpibts,seasonal="additive")# no aplica
+aju5mex<-hw(mexeduts,seasonal="additive")#no aplica
+#Ajuste 5.1 
+aju5.1bra<-hw(bpibts,seasonal="multiplicative")# no aplica
+aju5.1mex<-hw(mexeduts,seasonal="multiplicative")#no aplica
+
+###
+
+x11()
+plot(bpibts, plot.conf=FALSE, ylab="PIB a precios internacionales", xlab="Año", main="", fcol="white", type="o")
+###graficamos los ajustes
+lines(fitted(aju1bra), col="blue", type="o")
+lines(fitted(aju2bra), col="red", type="o")
+lines(fitted(aju3bra), col="green", type="o")
+lines(fitted(aju4bra), col="pink", type="o")
+legend("topleft", lty = 1, col=c(1,"blue","red","green", "pink"), c("pibbra", expression(alpha==.3),
+                                                            expression (alpha==.3),expression (alpha==.3), expression(alpha==.3)), pch=1)
+eval1<-accuracy (aju1bra)
+eval2<-accuracy (aju2bra)
+eval3<-accuracy (aju3bra)
+eval4<-accuracy (aju4bra)
+data<-data.frame(eval1,eval2,eval3,eval4)
+data
+
+
+x11()
+plot(mexeduts, plot.conf=FALSE, ylab="Educación México", xlab="Año", main="", fcol="white", type="o")
+###graficamos los ajustes
+lines(fitted(aju1mex), col="blue", type="o")
+lines(fitted(aju2mex), col="red", type="o")
+lines(fitted(aju3mex), col="green", type="o")
+lines(fitted(aju4mex), col="pink", type="o")
+
+legend("topleft", lty = 1, col=c(1,"blue","red","green", "pink"), c("mexeduts", expression(alpha==.3),
+                                                                    expression (alpha==.3),expression (alpha==.3), expression(alpha==.3)), pch=1)
+eval1m<-accuracy (aju1mex)
+eval2m<-accuracy (aju2mex)
+eval3m<-accuracy (aju3mex)
+eval4m<-accuracy (aju4mex)
+datam<-data.frame(eval1m,eval2m,eval3m,eval4m)
+datam
